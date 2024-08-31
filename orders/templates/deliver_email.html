@@ -1,0 +1,39 @@
+{% comment %} <div
+style="border: 1.5px solid gray; border-radius: 8px; box-shadow: 8px 8px 16px gray; padding: 16px; max-width: 600px; margin: auto; background-color: #f9f9f9;">
+ <div>
+    <h1 style="color: green;">Congratulations, {{user.first_name}} {{user.last_name}}! Your Delivery Successful</h1>
+
+    <h4>You have Ordered Food Name- {{Food_name}} <br> total quantity is - {{quantity}} pieces, where each item price is ${{price}}</h4>
+    <h4>Total Price is -<strong style="color: red;"> {{total_price}}</strong></h4>
+    <br/>
+    <h4 style="color: green;">Delivery Date :- <b style="color: black;">{{ order_date|date:"F j, Y, g:i a" }}</b></h4>
+ </div>
+ <hr/>
+ <p>Thanks for using our platform.</p>
+ <h2 style="color: rgb(0, 0, 0);">SmartCare</h2>
+</div> {% endcomment %}
+
+
+<div style="border: 1.5px solid gray; border-radius: 8px; box-shadow: 8px 8px 16px gray; padding: 16px; max-width: 600px; margin: auto; background-color: #f9f9f9;">
+   <div>
+       <h1 style="color: green;">Congratulations, {{ user.first_name }} {{ user.last_name }}! Your Delivery is Successful</h1>
+       
+       <h4>Here are the details of your order:</h4>
+       {% for item in food_items %}
+           <p>
+               <strong>Food Name:</strong> {{ item.name }}<br>
+               <strong>Quantity:</strong> {{ item.quantity }} pieces<br>
+               <strong>Price per Item:</strong> ${{ item.price }}<br>
+               <strong>Total for this item:</strong> ${{ item.price|floatformat:2 }} * {{ item.quantity }} = ${{ item.price|floatformat:2|add:item.quantity|floatformat:2 }}
+           </p>
+           <br/>
+       {% endfor %}
+       
+       <h4>Total Price: <strong style="color: red;">${{ total_price }}</strong></h4>
+       <br/>
+       {% comment %} <h4 style="color: green;">Delivery Date: <b style="color: black;">{{ order_date|date:"F j, Y, g:i a" }}</b></h4> {% endcomment %}
+   </div>
+   <hr/>
+   <p>Thanks for using our platform.</p>
+   <h2 style="color: rgb(0, 0, 0);">SmartCare</h2>
+</div>
