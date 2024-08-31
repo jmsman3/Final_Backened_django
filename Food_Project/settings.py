@@ -31,11 +31,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://smart-care-5ow3.onrender.com',  # Replace with your actual domain
-#     'http://127.0.0.1',  # Local development
+CSRF_TRUSTED_ORIGINS = [
+    'https://food-project-9vo4.onrender.com',  # Replace with your actual domain
+    'http://127.0.0.1',  # Local development
    
-# ]
+]
 
 CSRF_TRUSTED_ORIGINS = [
     # 'http://127.0.0.1:8000',

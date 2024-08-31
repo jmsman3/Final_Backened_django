@@ -22,7 +22,7 @@ psycopg2-binary
 PyAutoGUI
 PyGetWindow
 PyJWT
-PyMsgBox
+PyMsgBox 
 pyperclip
 PyRect
 PyScreeze
