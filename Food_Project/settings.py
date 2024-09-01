@@ -32,37 +32,35 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://food-project-9vo4.onrender.com',  # Replace with your actual domain
+    'https://food-project-9vo4.onrender.com', # Replace with your actual domain
     'http://127.0.0.1',  # Local development
-   
+     
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    # 'http://127.0.0.1:8000',
-    # 'http://localhost:8000',
+# CSRF_TRUSTED_ORIGINS = [
+#     # 'http://127.0.0.1:8000',
+#     # 'http://localhost:8000',
     
-#    'http://127.0.0.1:8000/user/register/',
-#    'http://127.0.0.1:8000/user/login/',
-#    'http://127.0.0.1:8000/user/logout/',
-#    'http://127.0.0.1:8000/user/list/',
+# #    'http://127.0.0.1:8000/user/register/',
+# #    'http://127.0.0.1:8000/user/login/',
+# #    'http://127.0.0.1:8000/user/logout/',
+# #    'http://127.0.0.1:8000/user/list/',
 
-#    'http://127.0.0.1:8000/menu/products/',
-#    'http://127.0.0.1:8000/order/cart',
-#    'http://127.0.0.1:8000/order/order_now',
-#    'https://food-project-9vo4.onrender.com/admin/',
+# #    'http://127.0.0.1:8000/menu/products/',
+# #    'http://127.0.0.1:8000/order/cart',
+# #    'http://127.0.0.1:8000/order/order_now',
+# #    'https://food-project-9vo4.onrender.com/admin/',
 
-
-
-   'https://food-project-9vo4.onrender.com/user/login/',
-   'https://food-project-9vo4.onrender.com/user/logout/',
-   'https://food-project-9vo4.onrender.com/user/list/',
+#    'https://food-project-9vo4.onrender.com/user/login/',
+#    'https://food-project-9vo4.onrender.com/user/logout/',
+#    'https://food-project-9vo4.onrender.com/user/list/',
 
 
 
-   'https://food-project-9vo4.onrender.com/menu/products/',
-   'https://food-project-9vo4.onrender.com/order/cart',
-   'https://food-project-9vo4.onrender.com/order/order_now',
-]
+#    'https://food-project-9vo4.onrender.com/menu/products/',
+#    'https://food-project-9vo4.onrender.com/order/cart',
+#    'https://food-project-9vo4.onrender.com/order/order_now',
+# ]
 
 
 
