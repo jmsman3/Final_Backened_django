@@ -9,6 +9,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from django.http import JsonResponse
+
 # Create your views here.
 
 class CartView(APIView):
@@ -20,26 +22,51 @@ class CartView(APIView):
         queryset = CartItems.objects.filter(cart=cart)
         serializer = CartItemsSerializers(queryset,many=True)
         return Response(serializer.data)
+    
+    def post(self, request):
+        try:
+            data = request.data
+            user = request.user
+            order, _ = Orders.objects.get_or_create(user=user, delivery_status=False)
 
-    def post(self,request):
-        data = request.data
-        user = request.user
-        cart,_ = Cart.objects.get_or_create(user = user, ordered = False)
+            product = Product.objects.get(id=data.get('product'))
+            price = product.price
+            quantity = int(data.get('quantity'))
 
-        product = Product.objects.get(id= data.get('product'))
-        price = product.price
-        quantity = data.get('quantity')
-        cart_items = CartItems(cart=cart , user=user,product=product,price=price,quantity=quantity)
-        cart_items.save()
+            order_item = OrderItem(order=order, user=user, product=product, price=price * quantity, quantity=quantity)
+            order_item.save()
 
-        total_price = 0
-        cart_items = CartItems.objects.filter(user = user, cart=cart.id)
-        for items in cart_items:
-            total_price += items.price
-        cart.total_price = total_price
-        cart.save()
+            # Update order total price
+            order.total_price += order_item.price
+            order.save()
 
-        return Response({'success' : 'Hey,Items Add Done to Cart'})
+            return JsonResponse({'success': 'Order placed successfully'}, status=200)
+        
+        except Product.DoesNotExist:
+            return JsonResponse({'error': 'Product not found'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        
+    # def post(self,request):
+    #     data = request.data
+    #     user = request.user
+    #     cart,_ = Cart.objects.get_or_create(user = user, ordered = False)
+
+    #     product = Product.objects.get(id= data.get('product'))
+    #     price = product.price
+    #     quantity = data.get('quantity')
+    #     cart_items = CartItems(cart=cart , user=user,product=product,price=price,quantity=quantity)
+    #     cart_items.save()
+
+    #     total_price = 0
+    #     cart_items = CartItems.objects.filter(user = user, cart=cart.id)
+    #     for items in cart_items:
+    #         total_price += items.price
+    #     cart.total_price = total_price
+    #     cart.save()
+
+    #     return Response({'success' : 'Hey,Items Add Done to Cart'})
     
     # def post(self, request):
     #     data = request.data
