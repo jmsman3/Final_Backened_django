@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -49,7 +49,7 @@ CSRF_TRUSTED_ORIGINS = [
 #    'http://127.0.0.1:8000/menu/products/',
 #    'http://127.0.0.1:8000/order/cart',
 #    'http://127.0.0.1:8000/order/order_now',
-   'https://food-project-9vo4.onrender.com/admin/',
+#    'https://food-project-9vo4.onrender.com/admin/',
 
 
 
@@ -140,12 +140,14 @@ WSGI_APPLICATION = 'Food_Project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 # REST_FRAMEWORK = {
 #     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 # }
@@ -161,6 +163,13 @@ REST_FRAMEWORK = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://foodmanageproject_user:PXo55NdDebRacCOHTwJXaRFFUVpqRxXP@dpg-cr9v5grv2p9s73bg1v70-a.oregon-postgres.render.com/foodmanageproject',
+    )
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

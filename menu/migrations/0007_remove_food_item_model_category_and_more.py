@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menu', '0006_alter_food_item_model_category'),
+   
         ('orders', '0011_remove_order_food_item_remove_order_user_and_more'),
     ]
 
