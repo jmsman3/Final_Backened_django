@@ -32,7 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://food-project-9vo4.onrender.com', # Replace with your actual domain
+
+    'https://final-food-project.onrender.com',
     'http://127.0.0.1',  # Local developme
 ]
 
