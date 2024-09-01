@@ -37,7 +37,7 @@ class CartView(APIView):
             order_item.save()
 
             # Update order total price
-            order.total_price += order_item.price
+            order.total_price += order_item.price 
             order.save()
 
             return JsonResponse({'success': 'Order placed successfully'}, status=200)
