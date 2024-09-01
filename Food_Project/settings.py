@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://foodmanageproject_user:PXo55NdDebRacCOHTwJXaRFFUVpqRxXP@dpg-cr9v5grv2p9s73bg1v70-a.oregon-postgres.render.com/foodmanageproject',
+        default='postgresql://food_project_user:nGEfDlkWklQMcQFw0Hi37R3CkJjLiSoq@dpg-cra1aj23esus739pbdeg-a.oregon-postgres.render.com/food_project',
     )
 }
 
