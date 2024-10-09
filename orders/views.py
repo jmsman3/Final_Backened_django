@@ -108,64 +108,150 @@ class CartView(APIView):
         return Response(serializer.data)
 
 
-class OrderView(APIView): 
+class OrderView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         user = request.user
         order = Orders.objects.filter(user=user, delivery_status=False).first()
+        if not order:
+            return Response({'error': 'No active order found'}, status=404)
+
         queryset = OrderItem.objects.filter(order=order)
         serializer = OrderItemsSerializers(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+        
         data = request.data
         user = request.user
         order, _ = Orders.objects.get_or_create(user=user, delivery_status=False)
 
-        product = Product.objects.get(id=data.get('product'))
-        price = product.price
-        quantity = data.get('quantity')
+        # Fetch the product and validate the quantity
+        try:
+            product = Product.objects.get(id=data.get('product'))
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=404)
 
-        order_item = OrderItem(order=order, user=user, product=product,  price=product.price*int(quantity), quantity=quantity)
-        order_item.save()
+        quantity = int(data.get('quantity', 0))
+        if quantity <= 0:
+            return Response({'error': 'Invalid quantity'}, status=400)
 
-        # Update the total amount after adding the new item
+        # Get or create order item
+        order_item, created = OrderItem.objects.get_or_create(
+            order=order, product=product, defaults={'quantity': quantity, 'price': product.price * quantity}
+        )
+        if not created:
+            # If the order item already exists, update the quantity and price
+            order_item.quantity += quantity
+            order_item.price = product.price * order_item.quantity
+            order_item.save()
+
+        # Update the total order amount
         self.update_order_amount(order)
 
         return Response({'success': 'Order Added to OrderCart'})
+     
 
     def put(self, request):
+        
         data = request.data
-        order_item = OrderItem.objects.get(id=data.get('id'))
-        quantity = int(data.get('quantity'))
+        try:
+            order_item = OrderItem.objects.get(id=data.get('id'))
+        except OrderItem.DoesNotExist:
+            return Response({'error': 'OrderItem not found'}, status=404)
+
+        quantity = int(data.get('quantity', 0))
+        if quantity <= 0:
+            return Response({'error': 'Quantity must be greater than 0'}, status=400)
+
         order_item.quantity += quantity
         order_item.save()
 
-        # Update the total amount after updating the item
         self.update_order_amount(order_item.order)
 
         return Response({'success': 'Order Updated'})
-
+   
     def delete(self, request):
-        user = request.user
+        
         data = request.data
-        order_item = OrderItem.objects.get(id=data.get('id'))
+        try:
+            order_item = OrderItem.objects.get(id=data.get('id'))
+        except OrderItem.DoesNotExist:
+            return Response({'error': 'OrderItem not found'}, status=404)
+
         order = order_item.order
         order_item.delete()
 
-        # Update the total amount after deleting the item
         self.update_order_amount(order)
 
         queryset = OrderItem.objects.filter(order=order)
         serializer = OrderItemsSerializers(queryset, many=True)
         return Response(serializer.data)
+        
 
     def update_order_amount(self, order):
         order_items = OrderItem.objects.filter(order=order)
-        total_amount = sum(item.price * item.quantity for item in order_items)
+        total_amount = sum(item.price for item in order_items)
         order.amount = total_amount
         order.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # class CreateOrderView(APIView):
 #     def post(self, request):
