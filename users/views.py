@@ -67,7 +67,7 @@ class UserRegistrationApiView(APIView):
             # confirm_link = f"https://food-project-9vo4.onrender.com/user/active/{uid}/{token}"
             # confirm_link = f"https://food-project-9vo4.onrender.com/user/active/{uid}/{token}"
             # confirm_link = f"https://final-food-project.onrender.com/user/active/{uid}/{token}"
-            confirm_link = f"https://jmsman3.github.io/Final-Front_end-Django/user/active/{uid}/{token}"
+            confirm_link = f"https://foodproject-backened-django.vercel.app/user/active/{uid}/{token}"
             email_subject = "Confirm Your Email"
             email_body = render_to_string('confirm_email.html', {'confirm_link' : confirm_link})
             email = EmailMultiAlternatives(email_subject, '', to=[user.email])
