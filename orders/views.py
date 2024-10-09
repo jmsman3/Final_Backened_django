@@ -107,7 +107,6 @@ class CartView(APIView):
         serializer = CartItemsSerializers(queryset,many=True)
         return Response(serializer.data)
 
-
 class OrderView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -122,7 +121,6 @@ class OrderView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        
         data = request.data
         user = request.user
         order, _ = Orders.objects.get_or_create(user=user, delivery_status=False)
@@ -150,35 +148,34 @@ class OrderView(APIView):
         # Update the total order amount
         self.update_order_amount(order)
 
-        return Response({'success': 'Order Added to OrderCart'})
-     
+        return Response({'success': 'Order added to cart'})
 
     def put(self, request):
-        
         data = request.data
         try:
             order_item = OrderItem.objects.get(id=data.get('id'))
         except OrderItem.DoesNotExist:
-            return Response({'error': 'OrderItem not found'}, status=404)
+            return Response({'error': 'Order item not found'}, status=404)
 
         quantity = int(data.get('quantity', 0))
         if quantity <= 0:
             return Response({'error': 'Quantity must be greater than 0'}, status=400)
 
-        order_item.quantity += quantity
+        # Update quantity and price
+        order_item.quantity = quantity
+        order_item.price = order_item.product.price * quantity
         order_item.save()
 
         self.update_order_amount(order_item.order)
 
-        return Response({'success': 'Order Updated'})
-   
+        return Response({'success': 'Order updated'})
+
     def delete(self, request):
-        
         data = request.data
         try:
             order_item = OrderItem.objects.get(id=data.get('id'))
         except OrderItem.DoesNotExist:
-            return Response({'error': 'OrderItem not found'}, status=404)
+            return Response({'error': 'Order item not found'}, status=404)
 
         order = order_item.order
         order_item.delete()
@@ -188,18 +185,12 @@ class OrderView(APIView):
         queryset = OrderItem.objects.filter(order=order)
         serializer = OrderItemsSerializers(queryset, many=True)
         return Response(serializer.data)
-        
 
     def update_order_amount(self, order):
         order_items = OrderItem.objects.filter(order=order)
         total_amount = sum(item.price for item in order_items)
         order.amount = total_amount
         order.save()
-
-
-
-
-
 
 
 
