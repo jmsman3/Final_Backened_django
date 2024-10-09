@@ -36,9 +36,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://final-food-project.onrender.com',
     'http://127.0.0.1',  # Local developme
 ]
-CORS_ALLOWED_ORIGINS = [
-    "https://jmsman3.github.io/Final-Front_end-Django/home.html",  # Replace with your frontend URL
-]
 
 # CSRF_TRUSTED_ORIGINS = [
 #     # 'http://127.0.0.1:8000',
