@@ -208,7 +208,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+IMGBB_API_KEY = '59c029e1206724ae1f2e3c30d278d10f'  
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_ROOT = BASE_DIR / 'staticfiles'
