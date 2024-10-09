@@ -19,10 +19,10 @@ class Category(models.Model):
 class Product(models.Model):  #price ,food_title,food_detail,image
     category = models.ForeignKey(Category, related_name="food_items", on_delete=models.CASCADE)
     product_name = models.CharField(max_length=200) 
-    # image = models.ImageField(upload_to="menu/Food_image/")
+    image = models.ImageField(upload_to="menu/Food_image/")
     # image = models.URLField(max_length=300 , blank=True , null=True )
     # image = models.CharField(max_length=300 , blank=True , null=True )
-    image = models.ImageField(max_length=300 , blank=True , null=True )
+    # image = models.ImageField(max_length=300 , blank=True , null=True )
     price = models.DecimalField(max_digits=10,decimal_places=2)
     description = models.TextField()
     stock = models.IntegerField(default=100)
