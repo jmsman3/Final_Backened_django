@@ -32,9 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-
-    'https://foodproject-backened-django.vercel.app/',
-    'http://127.0.0.1',  # Local developme
+    'https://foodproject-backend-django.vercel.app/',  # Correct spelling
+    'http://127.0.0.1',
 ]
 
 

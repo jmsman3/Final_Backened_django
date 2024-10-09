@@ -122,6 +122,7 @@ class OrderView(APIView):
 
     def post(self, request):
         data = request.data
+        print(data)
         user = request.user
         order, _ = Orders.objects.get_or_create(user=user, delivery_status=False)
 
