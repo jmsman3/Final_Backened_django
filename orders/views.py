@@ -229,21 +229,6 @@ class OrderView(APIView):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # class CreateOrderView(APIView):
 #     def post(self, request):
 #         serializer = OrderSerializer(data=request.data)
