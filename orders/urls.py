@@ -8,5 +8,5 @@ urlpatterns = [
     path('',include(router.urls)),
     path('cart', CartView.as_view()),
    
-    path('order_now',OrderView.as_view()),
+    path('order_now/',OrderView.as_view()),
 ]
