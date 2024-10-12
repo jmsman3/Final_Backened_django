@@ -193,23 +193,14 @@ class CartView(APIView):
 #         order.amount = total_amount
 #         order.save()
 
-from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Orders, OrderItem
-from .serializers import OrderSerializers, OrderItemsSerializers
-from menu.models import Product
-
 class OrderView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         user = request.user
         order = Orders.objects.filter(user=user, delivery_status=False).first()
-        
         if not order:
-            return Response({'error': 'No active order found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'No active order found'}, status=404)
 
         queryset = OrderItem.objects.filter(order=order)
         serializer = OrderItemsSerializers(queryset, many=True)
@@ -220,57 +211,52 @@ class OrderView(APIView):
         user = request.user
         order, _ = Orders.objects.get_or_create(user=user, delivery_status=False)
 
-        # Fetch the product and validate the quantity
         try:
             product = Product.objects.get(id=data.get('product'))
         except Product.DoesNotExist:
-            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Product not found'}, status=404)
 
         quantity = int(data.get('quantity', 0))
         if quantity <= 0:
-            return Response({'error': 'Invalid quantity'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid quantity'}, status=400)
 
-        # Get or create order item
         order_item, created = OrderItem.objects.get_or_create(
             order=order, product=product, defaults={'quantity': quantity, 'price': product.price * quantity}
         )
         if not created:
-            # If the order item already exists, update the quantity and price
             order_item.quantity += quantity
-            order_item.price = product.price * order_item.quantity
+            order_item.price = product.price * order_item.quantity  # Ensure price reflects total cost
             order_item.save()
 
-        # Update the total order amount
         self.update_order_amount(order)
 
-        return Response({'success': 'Order added to cart'}, status=status.HTTP_201_CREATED)
+        return Response({'success': 'Order added to cart'})
 
     def put(self, request):
         data = request.data
         try:
             order_item = OrderItem.objects.get(id=data.get('id'))
         except OrderItem.DoesNotExist:
-            return Response({'error': 'Order item not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Order item not found'}, status=404)
 
         quantity = int(data.get('quantity', 0))
         if quantity <= 0:
-            return Response({'error': 'Quantity must be greater than 0'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Quantity must be greater than 0'}, status=400)
 
-        # Update quantity and price
         order_item.quantity = quantity
-        order_item.price = order_item.product.price * quantity
+        order_item.price = order_item.product.price * quantity  # Ensure price reflects total cost
         order_item.save()
 
         self.update_order_amount(order_item.order)
 
-        return Response({'success': 'Order updated'}, status=status.HTTP_200_OK)
+        return Response({'success': 'Order updated'})
 
     def delete(self, request):
         data = request.data
         try:
             order_item = OrderItem.objects.get(id=data.get('id'))
         except OrderItem.DoesNotExist:
-            return Response({'error': 'Order item not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Order item not found'}, status=404)
 
         order = order_item.order
         order_item.delete()
@@ -279,49 +265,13 @@ class OrderView(APIView):
 
         queryset = OrderItem.objects.filter(order=order)
         serializer = OrderItemsSerializers(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data)
 
     def update_order_amount(self, order):
         order_items = OrderItem.objects.filter(order=order)
         total_amount = sum(item.price for item in order_items)
         order.amount = total_amount
         order.save()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # class CreateOrderView(APIView):
 #     def post(self, request):
