@@ -142,17 +142,20 @@ class OrderView(APIView):
             order=order, product=product,
             defaults={'quantity': quantity, 'price': product.price * quantity}
         )
-        if not created:
+        
+        if created:
+            # Only deduct stock if the item is newly created
+            product.stock -= quantity
+            product.save()
+        else:
             order_item.quantity += quantity
-            order_item.price = product.price * order_item.quantity  # Ensure price reflects total cost
+            order_item.price = product.price * order_item.quantity
             order_item.save()
-
-        product.stock -= quantity  # Deduct stock
-        product.save()
 
         self.update_order_amount(order)
 
-        return Response({'success': 'Order added to cart'})
+        return Response({'success': 'Order added to cart', 'order_id': order.id})
+
 
     def put(self, request):
         data = request.data
