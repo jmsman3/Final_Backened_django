@@ -1,4 +1,4 @@
-### **Backend: Final\_Backened\_django**
+### **Backend: restaurant\_Backened\_django**
 
 📂 **Repository**: [Final\_Backened\_django](https://github.com/jmsman3/Final_Backened_django)
 
