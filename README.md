@@ -1,3 +1,4 @@
+---
 ### **Backend: restaurant\_Backened\_django**
 
 📂 **Repository**: [Final\_Backened\_django](https://github.com/jmsman3/Final_Backened_django)
@@ -46,11 +47,6 @@ Follow these steps to set up the backend locally:
 
    - Open `http://127.0.0.1:8000/` in your browser.
 
-#### **API Documentation**
-
-- Add detailed API documentation here if applicable.
-
----
 
 ### **Tech Stack**
 
