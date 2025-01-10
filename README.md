@@ -50,7 +50,7 @@ Follow these steps to set up the backend locally:
 
 ### **Tech Stack**
 
-- 🐍 **Backend**: Python Django
+- 🐍 **Backend**: Python Django,PostgreSQL
 - 🎨 **Frontend**: HTML, CSS, JavaScript
 
 ---
